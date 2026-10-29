@@ -1,50 +1,37 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/bt.h>
 
 / {
     keymap {
         compatible = "zmk,keymap";
 
-        // --- Layer 0: AutoCAD Mode ---
+        // Layer 0 — AutoCAD
         autocad_layer {
             display-name = "AutoCAD";
             bindings = <
-                // Key bindings for your switches (optional)
+                &mo 1           // SW1: switch to Revit layer
+                &studio_unlock  // SW2: unlock for ZMK Studio
+                &kp ESC         // SW3: Esc
             >;
-            // Encoder functions for this layer
             sensor-bindings = <
-                &inc_dec_kp C_VOL_UP C_VOL_DN   // Encoder 1: Volume Up/Down
-                &inc_dec_kp PG_UP PG_DN         // Encoder 2: Page Up/Down
-                &inc_dec_kp C_ZOOM_IN C_ZOOM_OUT // Encoder 3: Zoom In/Out
+                &inc_dec_kp C_VOL_UP C_VOL_DN   // Encoder 1
+                &inc_dec_kp C_NEXT C_PREV       // Encoder 2
+                &inc_dec_kp PG_UP PG_DN         // Encoder 3
             >;
         };
 
-        // --- Layer 1: Revit Mode ---
+        // Layer 1 — Revit
         revit_layer {
             display-name = "Revit";
             bindings = <
-                // Key bindings for your switches (optional)
-            >;
-            // Encoder functions for this layer
-            sensor-bindings = <
-                &inc_dec_kp C_PAN_UP C_PAN_DN    // Encoder 1: Pan Up/Down
-                &inc_dec_kp C_ROTATE_CW C_ROTATE_CCW // Encoder 2: Rotate CW/CCW
-                &inc_dec_kp C_ZOOM_IN C_ZOOM_OUT // Encoder 3: Zoom In/Out
-            >;
-        };
-
-        // --- System Layer (Hidden, for mode switching and ZMK Studio) ---
-        sys_layer {
-            display-name = "System";
-            bindings = <
-                // Add key bindings here if you have switches for mode switching
-                // For example: &mo 0, &mo 1, &studio_unlock
+                &mo 0           // SW1: back to AutoCAD layer
+                &studio_unlock  // SW2: unlock for ZMK Studio
+                &kp ESC         // SW3: Esc
             >;
             sensor-bindings = <
-                &inc_dec_kp C_VOL_UP C_VOL_DN
-                &inc_dec_kp PG_UP PG_DN
-                &inc_dec_kp C_ZOOM_IN C_ZOOM_OUT
+                &inc_dec_kp UP DOWN             // Encoder 1
+                &inc_dec_kp LEFT RIGHT          // Encoder 2
+                &inc_dec_kp PG_UP PG_DN         // Encoder 3
             >;
         };
     };
