@@ -1,0 +1,58 @@
+// --- Define the three encoders ---
+left_encoder: encoder_left {
+    compatible = "alps,ec11";
+    a-gpios = <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // Change to your Encoder 1 A pin
+    b-gpios = <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  // Change to your Encoder 1 B pin
+    steps = <80>;
+    status = "disabled";
+};
+
+middle_encoder: encoder_middle {
+    compatible = "alps,ec11";
+    a-gpios = <&gpio0 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // Change to your Encoder 2 A pin
+    b-gpios = <&gpio0 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // Change to your Encoder 2 B pin
+    steps = <80>;
+    status = "disabled";
+};
+
+right_encoder: encoder_right {
+    compatible = "alps,ec11";
+    a-gpios = <&gpio0 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // Change to your Encoder 3 A pin
+    b-gpios = <&gpio0 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // Change to your Encoder 3 B pin
+    steps = <80>;
+    status = "disabled";
+};
+
+// --- Group the encoders together ---
+sensors: sensors {
+    compatible = "zmk,keymap-sensors";
+    sensors = <&left_encoder &middle_encoder &right_encoder>; // The order here matters for the keymap
+    triggers-per-rotation = <20>;
+};
+
+// --- Enable the encoders ---
+&left_encoder { status = "okay"; };
+&middle_encoder { status = "okay"; };
+&right_encoder { status = "okay"; };
+
+// --- Configure the OLED display ---
+&i2c0 {
+    status = "okay";
+    clock-frequency = <100000>; // 100kHz is standard for SSD1306
+
+    ssd1306: ssd1306@3c {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>; // The I2C address is almost always 0x3C
+        width = <128>;
+        height = <64>; // Change to <32> if your OLED is 128x32
+        segment-remap;
+        com-invdir;
+        prechargep = <0x22>;
+    };
+};
+
+/ {
+    chosen {
+        zephyr,display = &ssd1306;
+    };
+};
